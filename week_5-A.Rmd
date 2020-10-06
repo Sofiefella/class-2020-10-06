@@ -12,8 +12,37 @@ library(tidyverse)
 ### Scene 1
 
 **Prompt:** Create a graphic of the posterior distribution of the [538 forecast](https://projects.fivethirtyeight.com/2020-election-forecast/) for Biden's electoral vote total. Recall the example given in Chapter 3 of *The Primer*.
+```{r}
+scenario <-read_csv("data_538/election-forecasts-2020/presidential_scenario_analysis_2020.csv")
+view(scenario)
+
+national_toplines <- read_csv("data_538/election-forecasts-2020/presidential_national_toplines_2020.csv")
+view(national_toplines)
+
+ev_probs <- read_csv("data_538/election-forecasts-2020/presidential_ev_probabilities_2020.csv",
+col_type = cols(
+  cycle = col_double(),
+  branch = col_character(),
+  model = col_character(),
+  modeldate = col_character(),
+  candidate_inc = col_character(),
+  candidate_chal = col_character(),
+  candidate_3rd = col_logical(),
+  evprob_inc = col_double(),
+  evprob_chal = col_double(),
+  evprob_3rd = col_double(),
+  total_ev = col_double(),
+  timestamp = col_character(),
+  simulations = col_double()
+))
+  
+ev_probs %>%
+ggplot(ev_probs, mapping = aes(total_ev, evprob_chal)) +
+  geom_col()
 
 
+
+```
 
 ### Scene 2
 
@@ -25,7 +54,34 @@ b) Assume that Biden implements the campaign, create the actual Preceptor Table 
 
 c) What does the actual Preceptor Table look like now?
 
+```{r}
+ev_probs <- read_csv("data_538/election-forecasts-2020/presidential_ev_probabilities_2020.csv",
+col_type = cols(
+  cycle = col_double(),
+  branch = col_character(),
+  model = col_character(),
+  modeldate = col_character(),
+  candidate_inc = col_character(),
+  candidate_chal = col_character(),
+  candidate_3rd = col_character(),
+  evprob_inc = col_double(),
+  evprob_chal = col_double(),
+  evprob_3rd = col_logical(),
+  total_ev = col_double(),
+  timestamp = col_character(),
+  simulations = col_double()
+)) %>%
+  filter(total_ev > 300) %>%
+summarize(prob = sum(evprob_chal))
 
+
+filter(total_ev == 531) %>%
+  summarize(prob = sum(evprob_chal))
+
+filter(total_ev == 531) %>%
+  summarize(prob = sum(evprob_chal))
+
+```
 
 
 ### Scene 3
@@ -40,6 +96,11 @@ b) What is the probability that Biden wins exactly 531 electoral votes? Is this 
 c) What is the probability of a "very close" election, defined as Biden winning between 269 and 289 electoral votes, inclusive?
 
 d) How many unique electoral vote totals does 538 view as impossible for Biden to achieve? Some of these are truly impossible. Given an example of one of these. Why does 538 think that some vote totals, while theoretically possible, should be given zero probability in its posterior?
+
+```{r}
+
+```
+
 
 
 
